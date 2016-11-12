@@ -1,0 +1,44 @@
+
+with "aunit";
+with "../arcoll.gpr";
+
+project ARColl_Test is
+
+    for Languages use ("Ada");
+    for Source_Dirs use ("src/**");
+    for Object_Dir use "obj";
+    for Exec_Dir use "bin";
+    
+    for Main use ("arcoll_harness");
+
+    package Compiler is
+
+        for Default_Switches ("ada") use ("-gnatwa", "-g", "-gnatE", "-gnata", "-gnato", "-fno-omit-frame-pointer", "-fno-inline", "-gnatf", "-fstack-check", "-gnat12");
+        --ggdb
+        -- "-fsanitize=address", "-fsanitize=leak", -- "-fsanitize=thread",
+    end Compiler;
+
+    package Builder is
+        -- -s => Recompile if switches changed.
+        -- -m => Minimal recompilation
+        for Default_Switches ("ada") use ("-s", "-m", "-g", "-j4");
+    end Builder;
+
+    package Linker is
+        for Default_Switches ("ada") use ("-lm", "-g");
+    end Linker;
+
+    package Check is
+    end Check;
+
+    package Binder is
+        for Default_Switches ("ada") use ("-E");
+    end Binder;
+
+    package Ide is
+        for Compiler_Command ("c") use "gcc";
+        for Vcs_Kind use "Git";
+        for Documentation_Dir use "doc";
+    end Ide;
+
+end ARColl_Test;
