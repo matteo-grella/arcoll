@@ -26,6 +26,7 @@ pragma License (Modified_GPL);
 
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Sets;
+with Ada.Unchecked_Deallocation;
 
 package ARColl is
 
@@ -45,6 +46,11 @@ package ARColl is
     type Index_Type_Array is array (Index_Type range <>) of Extended_Index_Type;
     -- Array (Index_Type) of Index_Type values
 
+    type Index_Array_Access is access all Index_Type_Array;
+    
+    procedure Free is new
+      Ada.Unchecked_Deallocation (Index_Type_Array, Index_Array_Access);
+    
     function Hash (Index : Extended_Index_Type) return Ada.Containers.Hash_Type is
       (Ada.Containers.Hash_Type
          ((abs Index) mod  Index_Type (Ada.Containers.Hash_Type'Last)))

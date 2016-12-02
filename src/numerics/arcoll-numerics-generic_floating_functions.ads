@@ -43,6 +43,9 @@ generic
     
 package ARColl.Numerics.Generic_Floating_Functions is
    
+    -- pragma Assertion_Policy (DISABLE);
+
+    
     pragma Unreferenced (Float_Array_Access_Array);
     
     ----
@@ -156,7 +159,6 @@ package ARColl.Numerics.Generic_Floating_Functions is
     function Log (X : Float_Type)  return Float_Type renames Float_Type_Elementary_Functions.Log;
     function Tanh (X : Float_Type)  return Float_Type renames Float_Type_Elementary_Functions.Tanh;
 
-    
     -------
     -- Statistics
     -------

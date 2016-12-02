@@ -26,6 +26,21 @@ pragma License (Modified_GPL);
 
 package body ARColl.Numerics.Reals is
     
+    function Argmax
+      (V : Real_Array) return Index_Type is
+    
+        Max_Index : Index_Type := V'First;
+    begin
+        
+        for I in V'Range loop
+            if V(I) > V(Max_Index) then
+                Max_Index := I;
+            end if;
+        end loop;
+        
+        return Max_Index;
+    end Argmax;
+    
     function Sum
       (V : Real_Vectors.Vector) return Real is
     begin
@@ -35,6 +50,45 @@ package body ARColl.Numerics.Reals is
             end loop;
         end return;
     end Sum;
+    
+    function Sum
+      (V : Real_Array) return Real is
+    begin
+        return Ret : Real := 0.0 do
+            for Element of V loop
+                Ret := Ret + Element;
+            end loop;
+        end return;
+    end Sum;
+    
+    function Variance
+      (V : in Real_Array) return Real is
+        
+        M : constant Real := Avg(V);
+        Squared_Dev : Real_Array(V'Range);
+    begin
+        for I in V'Range loop
+            Squared_Dev(I) := (V(I) - M) ** 2;
+        end loop;
+ 
+        return Avg(Squared_Dev); 
+    end Variance;
+
+    
+--      function Variance
+--        (V : in Real_Array) return Real is
+--          N          : constant Positive := V'Length;
+--          Sum        : Real := 0.0;
+--          Sum_Square : Real := 0.0;
+--      begin
+--                              
+--          for I in V'Range loop
+--              Sum := Sum + V(I);
+--              Sum_Square := Sum_Square + (V(I) * V(I));
+--          end loop;
+--                              
+--          return (Sum_Square - (Sum * Sum) / Real(N)) / Real(N); 
+--      end Variance;
     
     procedure My_Write
       (Stream : access Ada.Streams.Root_Stream_Type'Class;

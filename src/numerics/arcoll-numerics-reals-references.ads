@@ -38,7 +38,12 @@ package ARColl.Numerics.Reals.References is
     end record;
 
     type Real_Reference_Array is array (Index_Type range <>) of Real_Reference_Type;
-
+    type Real_Reference_Array_Access is access Real_Reference_Array;
+    
+    procedure Free is new
+      Ada.Unchecked_Deallocation 
+        (Real_Reference_Array, Real_Reference_Array_Access);
+    
     package Real_Reference_Maps is new
       Ada.Containers.Indefinite_Hashed_Maps
         (Key_Type        => System.Address,

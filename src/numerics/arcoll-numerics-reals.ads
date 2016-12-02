@@ -41,7 +41,6 @@ package ARColl.Numerics.Reals is
       
     type Real_Array is array (Index_Type range <>) of aliased Real;
 
-
     -- Real Array
     
     type Real_Array_Access is access all Real_Array;
@@ -90,11 +89,29 @@ package ARColl.Numerics.Reals is
         (Index_Type   => Index_Type,
          Element_Type => Real);
     
+    ---
+    -- Basic Functions
+    ---
+    
+    function Argmax
+      (V : Real_Array) return Index_Type;
+   
+    function Sum
+      (V : Real_Array) return Real;
+    
+    function Avg
+      (V : Real_Array) return Real is
+      (if V'Length = 0 then 0.0 else Sum(V) / Real(V'Length)) with Inline;
+    
+    function Variance
+      (V : in Real_Array) return Real with
+      Pre => V'Length > 0;
+    
     function Sum
       (V : Real_Vectors.Vector) return Real;
     
     function Avg
       (V : Real_Vectors.Vector) return Real is
       (if V.Is_Empty then 0.0 else Sum(V) / Real(V.Length)) with Inline;
-    
+ 
 end ARColl.Numerics.Reals;
