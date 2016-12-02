@@ -24,8 +24,21 @@
 
 pragma License (Modified_GPL);
 
+with ARColl.Strings; use ARColl.Strings;
+
 package ARColl.IO is
 
-    procedure Empty;
+    function File_To_String
+      (Filename : String) return String_Access;
+    
+    Dir_Separator : constant Character;
+    pragma Import ( C, Dir_Separator, "__gnat_dir_separator");
+    
+    function Path_Join (A, B : String) return String is
+      (if A'Length = 0 
+       then B
+       elsif A (A'Last) = Dir_Separator 
+       then A & B
+       else A & Dir_Separator & B) with Inline;
     
 end ARColl.IO;

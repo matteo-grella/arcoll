@@ -24,11 +24,44 @@
 
 pragma License (Modified_GPL);
 
+with Ada.Streams.Stream_IO;
+with Ada.Directories;
+
 package body ARColl.IO is
 
-    procedure Empty is
+    function File_To_String
+      (Filename : String) return String_Access is
+
+        use Ada.Streams.Stream_IO;
+
+        File_Size : constant Natural := Natural (Ada.Directories.Size (Filename));
+
+        File         : File_Type;
+        Input_Stream : Ada.Streams.Stream_IO.Stream_Access;
+
+        File_Content : String_Access := new String (1 .. File_Size);
+        Index        : Natural := File_Content'First;
     begin
-        null;
-    end Empty;
+
+        Ada.Streams.Stream_IO.Open (File, In_File, Filename);
+        Input_Stream := Stream (File);
+
+        while not End_Of_File (File) loop
+            Character'Read (Input_Stream, File_Content (Index));
+            Index := Index + 1;
+        end loop;
+
+        Close (File);
+
+        return File_Content;
+    exception
+        when others =>
+            begin
+                Close (File);
+            exception when others => null;
+            end;
+            Free (File_Content);
+            raise;
+    end File_To_String;
 
 end ARColl.IO;
